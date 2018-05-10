@@ -1,0 +1,26 @@
+{
+  "name": "dreamscale-api",
+  "version": "1.0.0",
+  "keywords": [
+    "dreamscale",
+    "api",
+    "torchie",
+    "javascript",
+    "node",
+    "js"
+  ],
+  "homepage": "https://github.com/dreamscale-io/npm-dreamscale-api",
+  "bugs": "https://github.com/dreamscale-io/npm-dreamscale-api/issues",
+  "description": "This is a generalized javascript node api for DreamScale.io services.",
+  "main": "index.js",
+  "repository": {
+    "url": "https://github.com/dreamscale-io/npm-dreamscale-api.git",
+    "type": "git"
+  },
+  "author": "Kara Marie Rawson <kara@dreamscale.io>",
+  "license": "MIT",
+  "private": null,
+  "dependencies": {
+    "superagent": "^3.8.3"
+  }
+}
