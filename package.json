@@ -12,7 +12,7 @@
   "homepage": "https://github.com/dreamscale-io/npm-dreamscale-api",
   "bugs": "https://github.com/dreamscale-io/npm-dreamscale-api/issues",
   "description": "This is a generalized javascript node api for DreamScale.io services.",
-  "main": "index.js",
+  "main": "src/index.js",
   "repository": {
     "url": "https://github.com/dreamscale-io/npm-dreamscale-api.git",
     "type": "git"
