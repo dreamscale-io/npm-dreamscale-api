@@ -1,19 +1,16 @@
-var fs = require("fs");
-var browserify = require("browserify");
-var babelify = require("babelify");
-var babel = require("babel-core")
+const fs = require("fs");
+const browserify = require("browserify");
+const babelify = require("babelify");
+const babel = require("babel-core")
 
 //creates npm package  for module imports
-babel.transformFile("./src/index.js", { presets: ["env"] }, function (err, result) {
-  fs.writeFile("./dist/dreamscale-api.js", result.code, function(err) {
-    if(err) {
-        return console.log(err);
-    }
-    console.log("dreamscale-api.js was saved!");
-	}); 
-});
+console.log("[npm-dreamscale-api] performing babel compilation...");
+const { code, map, ast } = babel.transformFileSync("./src/index.js", { presets: ["env"] });
+console.log("[npm-dreamscale-api] creating dreamscale-api.js...");
+fs.writeFileSync("./dist/dreamscale-api.js", code);
 
 //for direct browser loading
+console.log("[npm-dreamscale-api] creating dreamscale-api.bundle.js...");
 browserify({ debug: true })
   .transform(babelify.configure({ presets: ["env"] }))
   .require("./src/index.js", { entry: true })
