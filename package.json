@@ -1,6 +1,6 @@
 {
   "name": "dreamscale-api",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "keywords": [
     "dreamscale",
     "api",
@@ -24,6 +24,7 @@
     "build": "node build-utils/build.js"
   },
   "dependencies": {
+    "body-parser": "^1.18.2",
     "superagent": "^3.8.3"
   },
   "devDependencies": {
