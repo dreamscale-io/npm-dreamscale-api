@@ -28,6 +28,8 @@ var ApiProxy = exports.ApiProxy = function () {
 
 		console.log("[Server] create api proxy for -> " + apiProtocol + apiServer + " : " + path);
 		this.path = path;
+
+		/// use middleware to buffer data into res.body
 		app.use(_bodyParser2.default.json());
 	}
 
@@ -72,13 +74,17 @@ var ApiProxy = exports.ApiProxy = function () {
 			req.then(function (res) {
 				response.send(res);
 			}).catch(function (err) {
-				console.log("[Server] [API Proxy] [ERROR] " + err.message);
-				if (err.response) {
-					err.response.text = err.message;
-					response.send(err.response);
+				if (method === "GET") {
+					response.send(err);
 				} else {
-					response.status(400);
-					response.send(err.message);
+					console.log("[Server] [API Proxy] [ERROR] " + err.message);
+					if (err.response) {
+						err.response.text = err.message;
+						response.send(err.response);
+					} else {
+						response.status(400);
+						response.send(err.message);
+					}
 				}
 			});
 		}
@@ -106,13 +112,22 @@ var ApiProxy = exports.ApiProxy = function () {
 
 exports.default = function () {
 
-	function createOrganization(data, callback, error) {
-		handleRequest('POST', '/api/organization', data, callback, error);
-	}
-
 	// private function used by the API Resources
 	function handleRequest(method, url, data, callback, error) {
-		(0, _superagent2.default)(method, url).send(data).set('Accept', 'application/json').then(function (res) {
+
+		/// build our request to send
+		var request = (0, _superagent2.default)(method, url);
+		request.set('Accept', 'application/json');
+
+		/// set data payload specific to method type
+		if (method === "POST") {
+			request.send(data);
+		} else if (method === "GET") {
+			request.query(data);
+		}
+
+		/// perform the request
+		request.then(function (res) {
 			var resObj = JSON.parse(res.text);
 
 			if (resObj.status === 200) {
@@ -121,6 +136,11 @@ exports.default = function () {
 					callback(_data);
 				} else {
 					error(null, _data);
+				}
+			} else if (method === "GET") {
+				if (resObj.response.text) {
+					var _data2 = JSON.parse(resObj.response.text);
+					error(null, _data2);
 				}
 			} else {
 				throw new Error("[" + resObj.status + "] " + resObj.text + " => " + resObj.req.method + " " + resObj.req.url);
@@ -131,10 +151,25 @@ exports.default = function () {
 		});
 	}
 
+	//
+	// Organization API
+	//
+
+	function createOrganization(data, callback, error) {
+		handleRequest('POST', '/api/organization', data, callback, error);
+	}
+
+	function decodeInvitation(query, callback, error) {
+		handleRequest('GET', '/api/organization/member/invitation', query, callback, error);
+	}
+
 	// expose our public functions
 	return {
 		Organization: {
-			create: createOrganization
+			create: createOrganization,
+			Member: {
+				decodeInvitation: decodeInvitation
+			}
 		}
 	};
 }();
