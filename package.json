@@ -12,7 +12,7 @@
   "homepage": "https://github.com/dreamscale-io/npm-dreamscale-api",
   "bugs": "https://github.com/dreamscale-io/npm-dreamscale-api/issues",
   "description": "This is a generalized javascript node api for DreamScale.io services.",
-  "main": "dist/dreamscale-api.bundle.js",
+  "main": "dist/dreamscale-api.js",
   "repository": {
     "url": "https://github.com/dreamscale-io/npm-dreamscale-api.git",
     "type": "git"
@@ -30,6 +30,7 @@
     "babel-core": "^6.26.3",
     "babel-preset-env": "^1.7.0",
     "babelify": "^8.0.0",
-    "browserify": "^16.2.2"
+    "browserify": "^16.2.2",
+    "bundle-js": "^1.0.2"
   }
 }
